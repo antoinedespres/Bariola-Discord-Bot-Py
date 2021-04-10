@@ -7,18 +7,27 @@ from itertools import cycle
 client = commands.Bot(command_prefix='$')
 client.remove_command('help')
 
+game = cycle(['eating kibbles',
+              'drinking water',
+              'walking around',
+              'sleeping',
+              'doing its claws',
+              'napping',
+              'spying on its owner',
+              'watching TV',
+              'meowing',
+              'doing nothing'])
 
-status = cycle(['eating kibbles',
-                'drinking water',
-                'walking around',
-                'sleeping',
-                'doing its claws',
-                'napping',
-                'spying on its owner',
-                'watching TV',
-                'meowing',
-                'grooming',
-                'doing nothing'])
+status = cycle([discord.Status.dnd,
+                discord.Status.online,
+                discord.Status.idle,
+                discord.Status.dnd,
+                discord.Status.online,
+                discord.Status.idle,
+                discord.Status.online,
+                discord.Status.dnd,
+                discord.Status.online,
+                discord.Status.online])
 
 
 @client.event
@@ -40,7 +49,7 @@ async def on_message(self, message):
 
 @tasks.loop(minutes=15)
 async def change_status():
-    await client.change_presence(activity=discord.Game(next(status)))
+    await client.change_presence(activity=discord.Game(next(game)), status=next(status))
 
 
 @client.command()
@@ -48,7 +57,17 @@ async def ping(ctx):
     await ctx.send(f':ping_pong: Pong! I reacted in {round(client.latency * 1000)} ms.')
 
 
-extensions = ['cogs.CommandEvents', 'cogs.Greetings', 'cogs.HelpCommands', 'cogs.ServerMgmt', 'cogs.Talk']
+@client.command()
+async def vc(ctx):
+    channel = ctx.author.voice.channel
+
+    if channel is not None:
+        membres = channel.members
+        for member in membres:
+            await ctx.send(member.mention)
+
+
+extensions = ['cogs.CommandEvents', 'cogs.Greetings', 'cogs.HelpCommands', 'cogs.ServerMgmt', 'cogs.Talk', 'cogs.Music']
 
 if __name__ == '__main__':
     for ext in extensions:

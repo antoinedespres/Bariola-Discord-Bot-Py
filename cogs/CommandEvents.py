@@ -15,7 +15,7 @@ class CommandEvents(commands.Cog):
 
     @commands.Cog.listener()
     async def on_command_completion(self, ctx):
-        print(ctx.command.name + " successfully called.")
+        print(ctx.command.name + " successfully called by " + str(ctx.author))
 
 
 def setup(bot):

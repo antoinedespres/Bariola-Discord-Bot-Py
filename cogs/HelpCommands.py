@@ -29,16 +29,16 @@ class HelpCommands(commands.Cog):
         embed.add_field(name='$say', value='I\'ll repeat what you wrote!', inline=False)
 
         await author.send(embed=embed)
-        await ctx.send("PM sent :smile_cat:!")
+        # await ctx.send(embed=embed)
 
-    @commands.command(aliases=['info', 'author'])
+    @commands.command(aliases=['info', 'author', 'creator'])
     async def about(self, ctx):
-        await ctx.send('I\'m Bariola, a four-year-old calico cat.'
+        await ctx.send('I\'m Bariola, a five-year-old calico cat.'
                        'My name comes from the word "bariolé" (French) which means "coloured in bright and varied '
                        'tones".\n'
-                       'The digital version of me was created by Antoine Després, a 1st year student'
-                       ' of DUT diploma in Computer Science.'
-                       '\nCheck out his other creations on:  https://github.com/antoinedespres')
+                       'The digital version of me was created by Antoine Després, a 2nd year student'
+                       ' of BSc degree in Computer Science'
+                       '\nCheck out his other creations and my source code on:  https://github.com/antoinedespres !')
 
 
 def setup(bot):

@@ -14,7 +14,8 @@ class ServerMgmt(commands.Cog):
     with open('warnings.json', 'r') as infile:
         warnings = json.load(infile)
 
-    # warning and auto-kick
+    # command to warn someone in case of bad behavior. In case of 3 warnings,
+    # the person is kicked from the server
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def warning(self, ctx, warnedMember: discord.Member):
@@ -45,14 +46,33 @@ class ServerMgmt(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(administrator=True)
+    async def kick(self, ctx, memberToKick: discord.Member):
+        await memberToKick.send(
+            "It's bad to be bad! :pouting_cat:")
+        await memberToKick.kick()
+
+    @commands.command()
+    @commands.has_permissions(administrator=True)
+    async def ban(self, ctx, memberToBan: discord.Member):
+        await memberToBan.send(
+            "It's bad to be bad! :pouting_cat:")
+        await memberToBan.ban()
+
+    @commands.command()
+    @commands.has_permissions(administrator=True)
     async def clear(self, ctx, amount=5):
         await ctx.channel.purge(limit=amount)
 
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def say(self, ctx, *, message):
-        # TODO Remove user's message
+
+        await ctx.channel.purge(limit=1)  # Removes the message which called the command
         await ctx.send(message)
+
+    @commands.command()
+    async def avatar(self, ctx, *, member: discord.Member = None):
+        await ctx.send(member.avatar_url)
 
 
 def setup(bot):
